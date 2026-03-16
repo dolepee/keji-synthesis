@@ -1,0 +1,50 @@
+{
+  "name": "KEJI",
+  "description": "An autonomous agent CFO that decides when work is worth paying for, buys paid tools and data, executes tasks, and leaves verifiable receipts.",
+  "model": {
+    "primary": "bankr-gateway",
+    "fallback": null
+  },
+  "operatorWallet": {
+    "address": "0x8942F989343e4Ce8e4c8c0D7C648a6953ff3A5A2",
+    "chain": "Status Network Sepolia"
+  },
+  "identity": {
+    "erc8004": {
+      "registered": true,
+      "address": "",
+      "txHash": "",
+      "chain": "Base Mainnet",
+      "participantId": "3cd4943bc21a4d509ccba73add0311c9",
+      "teamId": "3bb662129ec540f6acbdf8b949c4a7fc",
+      "registrationExplorerUrl": "https://basescan.org/tx/0x1269fb24f59cc7709ee88812e16119d7d45a21b0b7f79667e6c78e459acdd279"
+    }
+  },
+  "tools": [
+    {
+      "name": "bankr",
+      "role": "reasoning-and-routing",
+      "configured": true
+    },
+    {
+      "name": "agentcash",
+      "role": "x402-payments",
+      "configured": true
+    },
+    {
+      "name": "status-proof",
+      "role": "status-receipts",
+      "configured": true
+    }
+  ],
+  "taskCategories": [
+    "paid-research",
+    "budgeted-execution",
+    "receipt-generation"
+  ],
+  "constraints": {
+    "computeBudget": "10 USD",
+    "maxAutonomousSpend": "25 USD",
+    "requiresVerificationBeforeSubmit": true
+  }
+}
