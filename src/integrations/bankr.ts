@@ -74,7 +74,7 @@ async function requestBankrCompletion(request: TaskRequest, plan: TaskPlan): Pro
           "X-API-Key": config.bankr.apiKey
         },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(20_000)
+        signal: AbortSignal.timeout(60_000)
       });
     } catch (error) {
       lastError = error;
@@ -139,7 +139,7 @@ async function requestBankrCompletionWithCurl(payload: Record<string, unknown>):
       "--connect-timeout",
       "15",
       "--max-time",
-      "30",
+      "60",
       "https://llm.bankr.bot/v1/chat/completions",
       "-H",
       "Content-Type: application/json",
@@ -150,7 +150,7 @@ async function requestBankrCompletionWithCurl(payload: Record<string, unknown>):
     ],
     {
       env: process.env,
-      timeout: 20_000
+      timeout: 90_000
     }
   );
 
