@@ -24,7 +24,10 @@ const configSchema = z.object({
   STATUS_NETWORK_NAME: z.string().default("Status Network Sepolia"),
   STATUS_EXPLORER_BASE_URL: z.string().url().default("https://sepoliascan.status.network"),
   STATUS_PRIVATE_KEY: z.string().optional(),
-  STATUS_RECEIPT_REGISTRY_ADDRESS: z.string().optional()
+  STATUS_RECEIPT_REGISTRY_ADDRESS: z.string().optional(),
+  KEJI_X402_SERVER_PORT: z.coerce.number().int().positive().default(3402),
+  KEJI_X402_REPORT_PRICE_USD: z.coerce.number().positive().default(0.01),
+  KEJI_X402_PAY_TO: z.string().default("0x8942F989343e4Ce8e4c8c0D7C648a6953ff3A5A2")
 });
 
 const parsed = configSchema.parse(process.env);
@@ -60,5 +63,10 @@ export const config = {
     explorerBaseUrl: parsed.STATUS_EXPLORER_BASE_URL.trim().replace(/\/$/, ""),
     privateKey: parsed.STATUS_PRIVATE_KEY?.trim() || "",
     receiptRegistryAddress: parsed.STATUS_RECEIPT_REGISTRY_ADDRESS?.trim() || ""
+  },
+  x402Server: {
+    port: parsed.KEJI_X402_SERVER_PORT,
+    reportPriceUsd: parsed.KEJI_X402_REPORT_PRICE_USD,
+    payTo: parsed.KEJI_X402_PAY_TO
   }
 };

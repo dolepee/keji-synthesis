@@ -7,6 +7,7 @@ import {
 } from "./integrations/status.js";
 import { buildRegistrationPayload, registerWithSynthesis } from "./lib/synthesis-client.js";
 import { loadTreasury, recordRevenue } from "./lib/treasury.js";
+import { startX402Server } from "./server/x402-server.js";
 
 function parseCommand(argv: string[]): string {
   const positional = argv.filter((value) => !value.startsWith("-"));
@@ -89,6 +90,11 @@ async function main(): Promise<void> {
       data: { ...proof }
     });
     console.log(JSON.stringify(latestReceipt, null, 2));
+    return;
+  }
+
+  if (command === "serve") {
+    startX402Server();
     return;
   }
 
