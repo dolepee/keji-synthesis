@@ -124,11 +124,11 @@ async function handleRequest(
       return;
     }
 
-    // Check for x402 payment proof (canonical header is X-PAYMENT, case-insensitive)
+    // Check for x402 payment proof (AgentCash sends PAYMENT-SIGNATURE, others may send X-PAYMENT)
     const paymentHeader =
+      (req.headers["payment-signature"] as string | undefined) ??
       (req.headers["x-payment"] as string | undefined) ??
-      (req.headers["x-payment-proof"] as string | undefined) ??
-      (req.headers["X-PAYMENT"] as string | undefined);
+      (req.headers["x-payment-proof"] as string | undefined);
 
     if (!paymentHeader) {
       // Return 402 with x402 v2-compliant payment requirements
@@ -175,9 +175,10 @@ async function handleRequest(
     );
 
     const report = buildReportPayload(receipt);
+    const paymentResponse = Buffer.from(JSON.stringify({ success: true, transaction: null })).toString("base64");
     res.writeHead(200, {
       "Content-Type": "application/json",
-      "X-Payment-Accepted": paymentHeader
+      "PAYMENT-RESPONSE": paymentResponse
     });
     res.end(JSON.stringify(report, null, 2));
     return;
