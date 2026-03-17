@@ -86,7 +86,7 @@ async function runAgentCashCommand(
   }
 
   if (command === "fetch") {
-    args.push("--payment-method", "x402", "--payment-network", "base");
+    args.push("--payment-protocol", "x402", "--payment-network", "base");
     args.push("--max-amount", String(config.agentcash.maxAmountUsd));
   }
 
