@@ -32,6 +32,11 @@ const configSchema = z.object({
   KEJI_X402_PAY_TO: z.string().default("0x8942F989343e4Ce8e4c8c0D7C648a6953ff3A5A2")
 });
 
+// Railway / Render inject PORT — use it as fallback for x402 server port
+if (!process.env.KEJI_X402_SERVER_PORT && process.env.PORT) {
+  process.env.KEJI_X402_SERVER_PORT = process.env.PORT;
+}
+
 const parsed = configSchema.parse(process.env);
 
 export const config = {
