@@ -21,7 +21,7 @@
   "services": [
     {
       "name": "x402-research",
-      "endpoint": "https://38.49.210.117.sslip.io/keji/",
+      "endpoint": "https://keji-x402.up.railway.app/",
       "protocol": "x402",
       "description": "AI research reports — $0.01 USDC per report on Base",
       "pricing": {
@@ -32,7 +32,7 @@
     },
     {
       "name": "catalog",
-      "endpoint": "https://38.49.210.117.sslip.io/keji/reports",
+      "endpoint": "https://keji-x402.up.railway.app/reports",
       "protocol": "https",
       "description": "Free browsable catalog of available research reports"
     }
@@ -75,7 +75,7 @@
       "AgentCash x402 data purchases ($2.50 per task)"
     ],
     "selfSustaining": true,
-    "treasuryEndpoint": "https://38.49.210.117.sslip.io/keji/"
+    "treasuryEndpoint": "https://keji-x402.up.railway.app/"
   },
   "proofs": {
     "receiptRegistry": "0x89cf6d586902b8750e6d6e5158c51e838cae7aa0",
