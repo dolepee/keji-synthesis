@@ -1,6 +1,6 @@
 {
   "name": "KEJI",
-  "description": "Autonomous agent CFO that produces budget-justified research via Bankr inference, sells reports via x402 micropayments, and anchors every receipt onchain. Self-sustaining economics: revenue from x402 report sales funds Bankr compute.",
+  "description": "Autonomous agent CFO that produces budget-justified research via Bankr inference, sells reports via x402 micropayments (USDC on Base), and anchors every task receipt on Status Network (zero gas). Self-sustaining economics: x402 report revenue funds Bankr compute.",
   "model": {
     "primary": "bankr-gateway",
     "fallback": null
