@@ -184,6 +184,57 @@ async function handleRequest(
     return;
   }
 
+  // GET /.well-known/agent.json — agent discovery (ERC-8004 / A2A compatible)
+  if ((url.pathname === "/.well-known/agent.json" || url.pathname === "/agent.json") && req.method === "GET") {
+    const completedCount = receipts.filter((r) => r.result.outcome === "completed").length;
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify(
+        {
+          name: "KEJI",
+          description: "Autonomous agent CFO — produces budget-justified research via Bankr inference, sold via x402 micropayments, with onchain receipts on Status Network.",
+          x402Support: true,
+          active: true,
+          services: [
+            {
+              name: "x402-research",
+              endpoint: "/reports",
+              protocol: "x402",
+              description: `${completedCount} research reports available — $${REPORT_PRICE_USD} USDC each on Base`,
+              pricing: {
+                amount: String(REPORT_PRICE_USD),
+                currency: "USDC",
+                asset: USDC_BASE_ADDRESS,
+                network: BASE_NETWORK_CAIP2,
+                payTo: PAY_TO
+              }
+            },
+            {
+              name: "catalog",
+              endpoint: "/reports",
+              protocol: "https",
+              description: "Free browsable catalog of all reports"
+            }
+          ],
+          identity: {
+            erc8004: {
+              chain: "Base Mainnet",
+              participantId: "3cd4943bc21a4d509ccba73add0311c9",
+              registrationTx: "0x1269fb24f59cc7709ee88812e16119d7d45a21b0b7f79667e6c78e459acdd279"
+            }
+          },
+          proofs: {
+            receiptRegistry: "0x89cf6d586902b8750e6d6e5158c51e838cae7aa0",
+            network: "Status Network Sepolia"
+          }
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
   // GET / — server info
   if (url.pathname === "/" && req.method === "GET") {
     const completedCount = receipts.filter((r) => r.result.outcome === "completed").length;

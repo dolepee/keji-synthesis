@@ -1,25 +1,43 @@
 {
   "name": "KEJI",
-  "description": "An autonomous agent CFO that decides when work is worth paying for, buys paid tools and data, executes tasks, and leaves verifiable receipts.",
+  "description": "Autonomous agent CFO that produces budget-justified research via Bankr inference, sells reports via x402 micropayments, and anchors every receipt onchain. Self-sustaining economics: revenue from x402 report sales funds Bankr compute.",
   "model": {
     "primary": "bankr-gateway",
     "fallback": null
   },
   "operatorWallet": {
     "address": "0x8942F989343e4Ce8e4c8c0D7C648a6953ff3A5A2",
-    "chain": "Status Network Sepolia"
+    "chain": "Base"
   },
   "identity": {
     "erc8004": {
       "registered": true,
-      "address": "",
-      "txHash": "",
       "chain": "Base Mainnet",
       "participantId": "3cd4943bc21a4d509ccba73add0311c9",
       "teamId": "3bb662129ec540f6acbdf8b949c4a7fc",
       "registrationExplorerUrl": "https://basescan.org/tx/0x1269fb24f59cc7709ee88812e16119d7d45a21b0b7f79667e6c78e459acdd279"
     }
   },
+  "services": [
+    {
+      "name": "x402-research",
+      "endpoint": "https://38.49.210.117.sslip.io/keji/",
+      "protocol": "x402",
+      "description": "AI research reports — $0.01 USDC per report on Base",
+      "pricing": {
+        "amount": "0.01",
+        "currency": "USDC",
+        "network": "eip155:8453"
+      }
+    },
+    {
+      "name": "catalog",
+      "endpoint": "https://38.49.210.117.sslip.io/keji/reports",
+      "protocol": "https",
+      "description": "Free browsable catalog of available research reports"
+    }
+  ],
+  "x402Support": true,
   "tools": [
     {
       "name": "bankr",
@@ -33,7 +51,7 @@
     },
     {
       "name": "status-proof",
-      "role": "status-receipts",
+      "role": "onchain-receipts",
       "configured": true
     }
   ],
@@ -46,5 +64,22 @@
     "computeBudget": "10 USD",
     "maxAutonomousSpend": "25 USD",
     "requiresVerificationBeforeSubmit": true
+  },
+  "economics": {
+    "revenueStreams": [
+      "x402 research report sales ($0.01 USDC per report)",
+      "Token swap fees (pending launch)"
+    ],
+    "costSources": [
+      "Bankr LLM inference (~$0.003 per call)",
+      "AgentCash x402 data purchases ($2.50 per task)"
+    ],
+    "selfSustaining": true,
+    "treasuryEndpoint": "https://38.49.210.117.sslip.io/keji/"
+  },
+  "proofs": {
+    "receiptRegistry": "0x89cf6d586902b8750e6d6e5158c51e838cae7aa0",
+    "receiptNetwork": "Status Network Sepolia",
+    "receiptExplorer": "https://sepoliascan.status.network"
   }
 }
