@@ -10,4 +10,5 @@ build
 .env.production.local
 coverage
 *.log
-runtime
+runtime/status-wallet.json
+runtime/synthesis-api-key.txt

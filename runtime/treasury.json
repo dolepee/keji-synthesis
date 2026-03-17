@@ -1,0 +1,68 @@
+{
+  "totalSpentUsd": 22.527,
+  "totalInferenceCostUsd": 0.027,
+  "totalX402SpendUsd": 22.5,
+  "totalReceiptsAnchored": 9,
+  "totalTasksCompleted": 9,
+  "revenueEarnedUsd": 0.11,
+  "revenueSourceBreakdown": [
+    {
+      "source": "x402-report-sale:a9fe4bdd",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-16T11:56:46.378Z"
+    },
+    {
+      "source": "x402-report-sale:a9fe4bdd",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T07:29:34.139Z"
+    },
+    {
+      "source": "x402-report-sale:a9fe4bdd",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:32:55.076Z"
+    },
+    {
+      "source": "x402-report-sale:74953686",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:32:55.156Z"
+    },
+    {
+      "source": "x402-report-sale:246c51d1",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:32:55.228Z"
+    },
+    {
+      "source": "x402-report-sale:0ca57f57",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:32:55.301Z"
+    },
+    {
+      "source": "x402-report-sale:eb800233",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:32:55.381Z"
+    },
+    {
+      "source": "x402-report-sale:758dff98",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:32:55.454Z"
+    },
+    {
+      "source": "x402-report-sale:9ab01b9f",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:38:37.697Z"
+    },
+    {
+      "source": "x402-report-sale:0c37f176",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:41:49.329Z"
+    },
+    {
+      "source": "x402-report-sale:c87151b1",
+      "amountUsd": 0.01,
+      "timestamp": "2026-03-17T08:41:49.338Z"
+    }
+  ],
+  "netPositionUsd": -22.417,
+  "selfSustainabilityRatio": 0,
+  "updatedAt": "2026-03-17T10:45:59.640Z"
+}

@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: keji-x402
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: node dist/cli.js serve
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: KEJI_X402_SERVER_PORT
+        value: "10000"
+      - key: KEJI_X402_REPORT_PRICE_USD
+        value: "0.01"
+      - key: KEJI_X402_PAY_TO
+        value: "0x8942F989343e4Ce8e4c8c0D7C648a6953ff3A5A2"

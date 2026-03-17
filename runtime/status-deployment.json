@@ -1,0 +1,9 @@
+{
+  "network": "Status Network Sepolia",
+  "chainId": 1660990954,
+  "rpcUrl": "https://public.sepolia.rpc.status.network",
+  "contractAddress": "0x89cf6d586902b8750e6d6e5158c51e838cae7aa0",
+  "txHash": "0x6d0f10ea9f13122c9f34ab9b89719ae304ed82a76665195b949fa81088cb0e43",
+  "explorerUrl": "https://sepoliascan.status.network/tx/0x6d0f10ea9f13122c9f34ab9b89719ae304ed82a76665195b949fa81088cb0e43",
+  "deployedAt": "2026-03-14T18:00:19.165Z"
+}
