@@ -8,6 +8,19 @@ import {
 import { buildRegistrationPayload, registerWithSynthesis } from "./lib/synthesis-client.js";
 import { loadTreasury, recordRevenue } from "./lib/treasury.js";
 import { startX402Server } from "./server/x402-server.js";
+import {
+  claimTokenFees,
+  isBankrAgentConfigured,
+  launchToken as launchTokenBankr,
+  loadTokenState as loadTokenStateBankr,
+  seedBuy,
+  checkTokenStatus
+} from "./integrations/bankr-agent.js";
+import {
+  deployToken as deployClankerToken,
+  isClankerConfigured,
+  loadTokenState as loadTokenStateClanker
+} from "./integrations/clanker-launch.js";
 
 function parseCommand(argv: string[]): string {
   const positional = argv.filter((value) => !value.startsWith("-"));
@@ -125,6 +138,139 @@ async function main(): Promise<void> {
     const treasury = await loadTreasury();
     console.log("\n=== KEJI Treasury Report ===");
     console.log(JSON.stringify(treasury, null, 2));
+    return;
+  }
+
+  // ─── Token Launch & Fee Claiming ───
+
+  if (command === "token:launch") {
+    const name = argv.find((_, i) => argv[i - 1] === "--name") ?? "KEJI";
+    const symbol = argv.find((_, i) => argv[i - 1] === "--symbol") ?? "KEJI";
+    const imageUrl = argv.find((_, i) => argv[i - 1] === "--image") ?? "";
+    const description =
+      "The first AI agent that pays for its own brain. " +
+      "Every $KEJI trade funds autonomous intelligence — " +
+      "swap fees flow back to power Bankr inference, x402 research production, and onchain receipts. " +
+      "No VCs. No grants. Just an AI hustling for compute. " +
+      "Built by KEJI, the autonomous agent CFO.";
+    const useBankr = argv.includes("--bankr");
+
+    if (useBankr) {
+      if (!isBankrAgentConfigured()) {
+        throw new Error("Bankr Agent API key not configured. Set BANKR_AGENT_API_KEY or BANKR_LLM_KEY.");
+      }
+      const result = await launchTokenBankr({ name, symbol, description, imageUrl: imageUrl || undefined });
+      console.log(JSON.stringify(result, null, 2));
+    } else if (isClankerConfigured()) {
+      const result = await deployClankerToken({ name, symbol, imageUrl: imageUrl || undefined });
+      console.log(JSON.stringify(result, null, 2));
+    } else if (isBankrAgentConfigured()) {
+      const result = await launchTokenBankr({ name, symbol, description, imageUrl: imageUrl || undefined });
+      console.log(JSON.stringify(result, null, 2));
+    } else {
+      throw new Error(
+        "No deployment method available.\n" +
+        "  Option A: Set BASE_PRIVATE_KEY (funded wallet on Base) for Clanker v4 direct deploy\n" +
+        "  Option B: Set BANKR_AGENT_API_KEY with token deploy enabled at bankr.bot/api\n" +
+        "  Option C: Use --bankr flag with BANKR_LLM_KEY"
+      );
+    }
+    return;
+  }
+
+  if (command === "token:claim-fees") {
+    if (!isBankrAgentConfigured()) {
+      throw new Error("Bankr Agent API key not configured.");
+    }
+    const tokenName = argv.find((_, i) => argv[i - 1] === "--token");
+    const result = await claimTokenFees(tokenName);
+    console.log(JSON.stringify(result, null, 2));
+    return;
+  }
+
+  if (command === "token:status") {
+    const tokenState = (await loadTokenStateClanker()) ?? (await loadTokenStateBankr());
+    if (!tokenState?.launched) {
+      console.log("No token launched yet. Run: token:launch");
+      return;
+    }
+    console.log("\n=== $KEJI Token State ===");
+    console.log(JSON.stringify(tokenState, null, 2));
+
+    if (isBankrAgentConfigured()) {
+      console.log("\n=== Live Status (via Bankr) ===");
+      const liveStatus = await checkTokenStatus(tokenState.tokenName);
+      console.log(liveStatus);
+    }
+    return;
+  }
+
+  if (command === "token:seed-buy") {
+    const tokenState = (await loadTokenStateClanker()) ?? (await loadTokenStateBankr());
+    if (!tokenState?.contractAddress) {
+      throw new Error("No token contract address. Launch token first.");
+    }
+    const amount = argv.find((_, i) => argv[i - 1] === "--amount") ?? "0.001";
+    const result = await seedBuy(tokenState.contractAddress, amount);
+    console.log(result);
+    return;
+  }
+
+  // ─── Self-Sustaining Economics Demo ───
+
+  if (command === "economics") {
+    console.log("\n╔══════════════════════════════════════════════════╗");
+    console.log("║     KEJI Self-Sustaining Economics Dashboard     ║");
+    console.log("╚══════════════════════════════════════════════════╝\n");
+
+    const treasury = await loadTreasury();
+    const tokenState = (await loadTokenStateClanker()) ?? (await loadTokenStateBankr());
+
+    console.log("── Treasury ──");
+    console.log(`  Total Spent:         $${treasury.totalSpentUsd}`);
+    console.log(`  ├ Inference (Bankr): $${treasury.totalInferenceCostUsd}`);
+    console.log(`  └ x402 Purchases:    $${treasury.totalX402SpendUsd}`);
+    console.log(`  Revenue Earned:      $${treasury.revenueEarnedUsd}`);
+    console.log(`  Net Position:        $${treasury.netPositionUsd}`);
+    console.log(`  Self-Sustaining:     ${(treasury.selfSustainabilityRatio * 100).toFixed(1)}%`);
+    console.log(`  Tasks Completed:     ${treasury.totalTasksCompleted}`);
+    console.log(`  Receipts Anchored:   ${treasury.totalReceiptsAnchored}`);
+
+    if (treasury.revenueSourceBreakdown.length > 0) {
+      console.log("\n── Revenue Sources ──");
+      for (const src of treasury.revenueSourceBreakdown) {
+        console.log(`  ${src.source}: $${src.amountUsd} (${src.timestamp})`);
+      }
+    }
+
+    if (tokenState?.launched) {
+      console.log("\n── Token Economics ──");
+      console.log(`  Token:               $${tokenState.tokenSymbol} (${tokenState.tokenName})`);
+      console.log(`  Contract:            ${tokenState.contractAddress || "pending"}`);
+      console.log(`  Chain:               ${tokenState.chain}`);
+      console.log(`  Launched:            ${tokenState.launchedAt}`);
+      console.log(`  Fees Claimed:        $${tokenState.totalFeesClaimedUsd}`);
+      console.log(`  Fee Claims:          ${tokenState.feeClaims.length}`);
+    } else {
+      console.log("\n── Token Economics ──");
+      console.log("  No token launched. Run: token:launch");
+    }
+
+    console.log("\n── Flywheel ──");
+    const hasToken = tokenState?.launched ?? false;
+    const hasRevenue = treasury.revenueEarnedUsd > 0;
+    const hasInference = treasury.totalInferenceCostUsd > 0;
+    const hasReceipts = treasury.totalReceiptsAnchored > 0;
+
+    console.log(`  [${hasToken ? "✓" : " "}] Token launched (swap fees → revenue)`);
+    console.log(`  [${hasInference ? "✓" : " "}] Bankr inference used (revenue → compute)`);
+    console.log(`  [${hasReceipts ? "✓" : " "}] Onchain receipts (compute → proof)`);
+    console.log(`  [${hasRevenue ? "✓" : " "}] Revenue earned (proof → more compute)`);
+
+    if (hasToken && hasRevenue && hasInference && hasReceipts) {
+      console.log("\n  ★ FLYWHEEL ACTIVE — KEJI is self-sustaining!");
+    }
+
     return;
   }
 

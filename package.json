@@ -12,6 +12,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "clanker-sdk": "^4.2.14",
     "dotenv": "^16.4.7",
     "solc": "^0.8.34",
     "viem": "^2.47.4",

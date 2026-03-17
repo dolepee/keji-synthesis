@@ -14,6 +14,8 @@ const configSchema = z.object({
   KEJI_HUMAN_SOCIAL_HANDLE: z.string().optional(),
   KEJI_REGISTRATION_IMAGE_URL: z.string().url().optional().or(z.literal("")),
   BANKR_LLM_KEY: z.string().optional(),
+  BANKR_AGENT_API_KEY: z.string().optional(),
+  BASE_PRIVATE_KEY: z.string().optional(),
   KEJI_BANKR_MODEL_ID: z.string().default("claude-sonnet-4.6"),
   KEJI_X402_ENDPOINT_URL: z.string().url().optional().or(z.literal("")),
   KEJI_AGENTCASH_REMOTE_HOST: z.string().optional(),
