@@ -29,7 +29,7 @@ const configSchema = z.object({
   STATUS_RECEIPT_REGISTRY_ADDRESS: z.string().optional(),
   KEJI_X402_SERVER_PORT: z.coerce.number().int().positive().default(3402),
   KEJI_X402_REPORT_PRICE_USD: z.coerce.number().positive().default(0.01),
-  KEJI_X402_PAY_TO: z.string().default("0x8942F989343e4Ce8e4c8c0D7C648a6953ff3A5A2")
+  KEJI_X402_PAY_TO: z.string().default("0x43117507b51fe28a733d7524eb7f03635E2a155F")
 });
 
 // Railway / Render inject PORT — use it as fallback for x402 server port

@@ -65,7 +65,7 @@ curl https://keji-x402.up.railway.app/
 | Network | Base (eip155:8453) |
 | Asset | USDC (`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`) |
 | Price | $0.01 per report |
-| PayTo | `0x8942F989343e4Ce8e4c8c0D7C648a6953ff3A5A2` |
+| PayTo | `0x43117507b51fe28a733d7524eb7f03635E2a155F` |
 
 ## How It Works
 
