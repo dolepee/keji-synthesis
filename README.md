@@ -32,7 +32,6 @@ track whether the value delivered exceeds the cost incurred.
 - **Protocol Labs: Agents With Receipts (ERC-8004)** — onchain identity + verifiable receipts
 - **Bankr: Best Bankr LLM Gateway Use** — real inference routing with self-sustaining economics
 - **Status Network: Go Gasless** — deployed contract + gasless receipt anchoring
-- **Base** — USDC payments + ERC-8004 identity on Base Mainnet
 
 ## Core Loop
 
