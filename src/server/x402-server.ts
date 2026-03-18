@@ -128,7 +128,14 @@ async function handleRequest(
         category: r.request.category,
         completedAt: r.completedAt,
         hasProof: Boolean(r.proof),
-        priceUsd: REPORT_PRICE_USD
+        priceUsd: REPORT_PRICE_USD,
+        proof: r.proof
+          ? {
+              txHash: r.proof.txHash,
+              explorerUrl: r.proof.explorerUrl,
+              receiptHash: r.proof.receiptHash
+            }
+          : null
       }));
 
     res.writeHead(200, { "Content-Type": "application/json" });

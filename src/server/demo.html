@@ -41,7 +41,7 @@
 <body>
 <div class="container">
   <h1><span class="status-dot live"></span> KEJI</h1>
-  <div class="subtitle">Autonomous Agent CFO — self-sustaining AI research economics on Base</div>
+  <div class="subtitle">Autonomous Agent CFO — manages budgets, purchases research, sells reports via x402, and anchors every transaction onchain. Every claim below is backed by a log entry or tx hash.</div>
 
   <div class="integrations">
     <span class="tag">Bankr LLM</span>
@@ -71,7 +71,7 @@
 
   <h2>Research Reports <span id="report-count" style="color:#888; font-size:0.8em;"></span></h2>
   <table>
-    <thead><tr><th>Topic</th><th>Date</th><th>Proof</th><th>Price</th></tr></thead>
+    <thead><tr><th>Topic</th><th>Date</th><th>Onchain Proof</th><th>Price</th></tr></thead>
     <tbody id="reports"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
   </table>
 
@@ -103,14 +103,17 @@ async function loadData() {
     const data = await res.json();
     document.getElementById('report-count').textContent = `(${data.count})`;
     const tbody = document.getElementById('reports');
-    tbody.innerHTML = data.reports.map(r => `
-      <tr>
+    tbody.innerHTML = data.reports.map(r => {
+      const proofCell = r.proof
+        ? `<a href="${r.proof.explorerUrl}" target="_blank" class="proof-badge">tx:${r.proof.txHash.slice(0,10)}...</a>`
+        : '<span style="color:#555">Pending</span>';
+      return `<tr>
         <td>${r.goal.length > 80 ? r.goal.slice(0,80) + '...' : r.goal}</td>
         <td style="white-space:nowrap; color:#888;">${new Date(r.completedAt).toLocaleDateString()}</td>
-        <td>${r.hasProof ? '<span class="proof-badge">On-chain</span>' : '<span style="color:#555">Pending</span>'}</td>
+        <td>${proofCell}</td>
         <td style="color:#00ff88">$${r.priceUsd}</td>
-      </tr>
-    `).join('');
+      </tr>`;
+    }).join('');
   } catch(e) { document.getElementById('reports').innerHTML = '<tr><td colspan="4">Failed to load</td></tr>'; }
 }
 loadData();

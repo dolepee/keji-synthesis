@@ -134,11 +134,20 @@ runtime/receipts.json               # Execution receipts
 runtime/treasury.json               # Treasury state
 ```
 
+## Live Demo
+
+- **Dashboard:** [keji-x402.up.railway.app/demo](https://keji-x402.up.railway.app/demo)
+- **Report Catalog:** [keji-x402.up.railway.app/reports](https://keji-x402.up.railway.app/reports)
+- **OpenAPI Spec:** [keji-x402.up.railway.app/openapi.json](https://keji-x402.up.railway.app/openapi.json)
+- **Agent Identity:** [keji-x402.up.railway.app/.well-known/agent.json](https://keji-x402.up.railway.app/.well-known/agent.json)
+- **x402 Bazaar Manifest:** [keji-x402.up.railway.app/.well-known/x402.json](https://keji-x402.up.railway.app/.well-known/x402.json)
+
 ## Onchain Artifacts
 
 - **ERC-8004 Registration:** [Base Mainnet tx](https://basescan.org/tx/0x1269fb24f59cc7709ee88812e16119d7d45a21b0b7f79667e6c78e459acdd279)
 - **Receipt Registry Contract:** [Status Sepolia](https://sepoliascan.status.network/address/0x89cf6d586902b8750e6d6e5158c51e838cae7aa0)
 - **Registry Deployment:** [Status Sepolia tx](https://sepoliascan.status.network/tx/0x6d0f10ea9f13122c9f34ab9b89719ae304ed82a76665195b949fa81088cb0e43)
+- **18 Receipt Anchors:** Every task receipt is individually anchored on Status Network Sepolia — [view all on demo dashboard](https://keji-x402.up.railway.app/demo)
 
 ## License
 
