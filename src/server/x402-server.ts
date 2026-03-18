@@ -202,6 +202,119 @@ async function handleRequest(
     return;
   }
 
+  // GET /openapi.json — OpenAPI spec for AgentCash discovery
+  if (url.pathname === "/openapi.json" && req.method === "GET") {
+    const completedReceipts = receipts.filter((r) => r.result.outcome === "completed");
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify(
+        {
+          openapi: "3.1.0",
+          info: {
+            title: "KEJI Research Reports",
+            version: "0.2.0",
+            description:
+              "Autonomous AI research agent — budget-justified reports on crypto, DeFi, agent economics, x402, and more. Each report costs $0.01 USDC on Base via x402 micropayments."
+          },
+          servers: [{ url: "https://keji-x402.up.railway.app" }],
+          paths: {
+            "/reports": {
+              get: {
+                operationId: "listReports",
+                summary: "Browse catalog of available research reports (free)",
+                description: `${completedReceipts.length} AI research reports available. Topics: x402 micropayments, agent economics, L2 comparisons, DeFi strategies, hackathon guides, multi-agent collaboration.`,
+                responses: {
+                  "200": {
+                    description: "Report catalog",
+                    content: {
+                      "application/json": {
+                        schema: {
+                          type: "object",
+                          properties: {
+                            reports: {
+                              type: "array",
+                              items: {
+                                type: "object",
+                                properties: {
+                                  id: { type: "string" },
+                                  goal: { type: "string" },
+                                  category: { type: "string" },
+                                  completedAt: { type: "string" },
+                                  priceUsd: { type: "number" }
+                                }
+                              }
+                            },
+                            count: { type: "integer" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "/reports/{reportId}": {
+              get: {
+                operationId: "getReport",
+                summary: "Get full research report ($0.01 USDC via x402)",
+                description:
+                  "Returns the complete AI research report with analysis, data, and onchain proof. Requires x402 payment of $0.01 USDC on Base.",
+                parameters: [
+                  {
+                    name: "reportId",
+                    in: "path",
+                    required: true,
+                    schema: { type: "string" },
+                    description: "Report ID from the catalog"
+                  }
+                ],
+                responses: {
+                  "200": {
+                    description: "Full research report",
+                    content: {
+                      "application/json": {
+                        schema: {
+                          type: "object",
+                          properties: {
+                            reportId: { type: "string" },
+                            goal: { type: "string" },
+                            answer: { type: "string" },
+                            provider: { type: "string" },
+                            completedAt: { type: "string" },
+                            proof: { type: "object" }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "402": {
+                    description: "Payment required — $0.01 USDC on Base",
+                    headers: {
+                      "PAYMENT-REQUIRED": {
+                        description: "Base64-encoded x402 payment offer",
+                        schema: { type: "string" }
+                      }
+                    }
+                  }
+                },
+                "x-x402": {
+                  enabled: true,
+                  network: BASE_NETWORK_CAIP2,
+                  asset: USDC_BASE_ADDRESS,
+                  amount: usdToAtomicUnits(REPORT_PRICE_USD),
+                  payTo: PAY_TO
+                }
+              }
+            }
+          }
+        },
+        null,
+        2
+      )
+    );
+    return;
+  }
+
   // GET /.well-known/x402.json — x402 Bazaar discovery manifest
   if (url.pathname === "/.well-known/x402.json" && req.method === "GET") {
     const completedReceipts = receipts.filter((r) => r.result.outcome === "completed");
