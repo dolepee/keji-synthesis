@@ -37,6 +37,7 @@ interface X402PaymentOffer {
       version: string;
     };
   }>;
+  extensions?: Record<string, unknown>;
   error?: string;
 }
 
@@ -61,6 +62,23 @@ function buildPaymentOffer(receiptId: string, description: string): X402PaymentO
         }
       }
     ],
+    extensions: {
+      bazaar: {
+        info: {
+          method: "GET",
+          input: {}
+        },
+        schema: {
+          type: "object",
+          properties: {
+            reportId: { type: "string" },
+            goal: { type: "string" },
+            answer: { type: "string" },
+            proof: { type: "object" }
+          }
+        }
+      }
+    },
     error: "X-PAYMENT header is required"
   };
 }
@@ -181,6 +199,53 @@ async function handleRequest(
       "PAYMENT-RESPONSE": paymentResponse
     });
     res.end(JSON.stringify(report, null, 2));
+    return;
+  }
+
+  // GET /.well-known/x402.json — x402 Bazaar discovery manifest
+  if (url.pathname === "/.well-known/x402.json" && req.method === "GET") {
+    const completedReceipts = receipts.filter((r) => r.result.outcome === "completed");
+    const resources = completedReceipts.map((r) => ({
+      url: `/reports/${r.receiptId}`,
+      method: "GET",
+      description: `Research report: ${r.request.goal}`,
+      priceUsd: REPORT_PRICE_USD,
+      accepts: [
+        {
+          scheme: "exact",
+          network: BASE_NETWORK_CAIP2,
+          amount: usdToAtomicUnits(REPORT_PRICE_USD),
+          asset: USDC_BASE_ADDRESS,
+          payTo: PAY_TO
+        }
+      ]
+    }));
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(
+      JSON.stringify(
+        {
+          x402Version: 2,
+          name: "KEJI",
+          description:
+            "Autonomous AI research agent — budget-justified reports on crypto, DeFi, agent economics. $0.01 USDC per report on Base.",
+          homepage: "https://keji-x402.up.railway.app",
+          payTo: PAY_TO,
+          network: BASE_NETWORK_CAIP2,
+          asset: USDC_BASE_ADDRESS,
+          catalog: "/reports",
+          resources,
+          identity: {
+            erc8004: {
+              chain: "Base Mainnet",
+              participantId: "3cd4943bc21a4d509ccba73add0311c9"
+            }
+          }
+        },
+        null,
+        2
+      )
+    );
     return;
   }
 
