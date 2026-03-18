@@ -31,8 +31,8 @@ track whether the value delivered exceeds the cost incurred.
 - **Protocol Labs: Let the Agent Cook** — fully autonomous decision loop
 - **Protocol Labs: Agents With Receipts (ERC-8004)** — onchain identity + verifiable receipts
 - **Bankr: Best Bankr LLM Gateway Use** — real inference routing with self-sustaining economics
-- **Merit Systems: Build with AgentCash** — load-bearing x402 payments
 - **Status Network: Go Gasless** — deployed contract + gasless receipt anchoring
+- **Base** — USDC payments + ERC-8004 identity on Base Mainnet
 
 ## Core Loop
 
