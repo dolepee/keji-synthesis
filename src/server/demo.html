@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KEJI — Autonomous Agent CFO</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'SF Mono', 'Fira Code', monospace; background: #0a0a0a; color: #e0e0e0; line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+  h1 { color: #00ff88; font-size: 2em; margin-bottom: 4px; }
+  h2 { color: #00cc6a; font-size: 1.2em; margin: 24px 0 12px; border-bottom: 1px solid #1a1a1a; padding-bottom: 6px; }
+  .subtitle { color: #888; font-size: 0.9em; margin-bottom: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 16px; }
+  .card .label { color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; }
+  .card .value { color: #00ff88; font-size: 1.6em; font-weight: bold; margin-top: 4px; }
+  .card .value.negative { color: #ff4444; }
+  .card .value.warning { color: #ffaa00; }
+  .integrations { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .tag { background: #1a2a1a; border: 1px solid #00ff8844; color: #00ff88; padding: 4px 12px; border-radius: 16px; font-size: 0.8em; }
+  .tag.blue { background: #1a1a2a; border-color: #4488ff44; color: #4488ff; }
+  .tag.purple { background: #2a1a2a; border-color: #aa44ff44; color: #aa44ff; }
+  .tag.orange { background: #2a2a1a; border-color: #ffaa4444; color: #ffaa00; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+  th { text-align: left; color: #888; font-size: 0.75em; text-transform: uppercase; letter-spacing: 1px; padding: 8px; border-bottom: 1px solid #222; }
+  td { padding: 8px; border-bottom: 1px solid #111; }
+  td a { color: #4488ff; text-decoration: none; }
+  td a:hover { text-decoration: underline; }
+  .proof-badge { display: inline-block; background: #1a2a1a; color: #00ff88; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; }
+  .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .status-dot.live { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #1a1a1a; color: #555; font-size: 0.8em; text-align: center; }
+  .discovery { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.85em; }
+  .discovery a { color: #4488ff; text-decoration: none; word-break: break-all; }
+  .discovery .dl { color: #888; }
+  .loading { color: #888; padding: 20px; text-align: center; }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } .discovery { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1><span class="status-dot live"></span> KEJI</h1>
+  <div class="subtitle">Autonomous Agent CFO — self-sustaining AI research economics on Base</div>
+
+  <div class="integrations">
+    <span class="tag">Bankr LLM</span>
+    <span class="tag blue">x402 Micropayments</span>
+    <span class="tag purple">Status Network</span>
+    <span class="tag orange">ERC-8004 Identity</span>
+    <span class="tag blue">AgentCash</span>
+    <span class="tag">USDC on Base</span>
+  </div>
+
+  <h2>Treasury</h2>
+  <div class="grid" id="treasury">
+    <div class="loading">Loading...</div>
+  </div>
+
+  <h2>Discovery Endpoints</h2>
+  <div class="discovery">
+    <span class="dl">OpenAPI Spec</span><a href="/openapi.json">/openapi.json</a>
+    <span class="dl">x402 Bazaar Manifest</span><a href="/.well-known/x402.json">/.well-known/x402.json</a>
+    <span class="dl">Agent Identity</span><a href="/.well-known/agent.json">/.well-known/agent.json</a>
+    <span class="dl">Report Catalog</span><a href="/reports">/reports</a>
+    <span class="dl">ERC-8004 Registration</span><a href="https://basescan.org/tx/0x1269fb24f59cc7709ee88812e16119d7d45a21b0b7f79667e6c78e459acdd279" target="_blank">BaseScan</a>
+    <span class="dl">Receipt Registry</span><a href="https://sepoliascan.status.network/address/0x89cf6d586902b8750e6d6e5158c51e838cae7aa0" target="_blank">Status Explorer</a>
+    <span class="dl">x402scout</span><a href="https://x402scout.com" target="_blank">x402scout.com</a>
+    <span class="dl">Coinbase x402 Listing</span><a href="https://github.com/coinbase/x402/issues/1672" target="_blank">Issue #1672</a>
+  </div>
+
+  <h2>Research Reports <span id="report-count" style="color:#888; font-size:0.8em;"></span></h2>
+  <table>
+    <thead><tr><th>Topic</th><th>Date</th><th>Proof</th><th>Price</th></tr></thead>
+    <tbody id="reports"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+  </table>
+
+  <div class="footer">
+    KEJI v0.2.0 &mdash; Built for Synthesis Hackathon 2026<br>
+    Bankr inference &rarr; x402 sales &rarr; Status receipts &rarr; self-sustaining economics
+  </div>
+</div>
+
+<script>
+async function loadData() {
+  // Load treasury
+  try {
+    const res = await fetch('/treasury');
+    const t = await res.json();
+    document.getElementById('treasury').innerHTML = `
+      <div class="card"><div class="label">Revenue Earned</div><div class="value">$${t.revenueEarnedUsd.toFixed(2)}</div></div>
+      <div class="card"><div class="label">Total Spent</div><div class="value negative">$${t.totalSpentUsd.toFixed(2)}</div></div>
+      <div class="card"><div class="label">Tasks Completed</div><div class="value">${t.totalTasksCompleted}</div></div>
+      <div class="card"><div class="label">Receipts Anchored</div><div class="value">${t.totalReceiptsAnchored}</div></div>
+      <div class="card"><div class="label">Net Position</div><div class="value ${t.netPositionUsd >= 0 ? '' : 'negative'}">$${t.netPositionUsd.toFixed(2)}</div></div>
+      <div class="card"><div class="label">Inference Cost</div><div class="value">$${t.totalInferenceCostUsd.toFixed(3)}</div></div>
+    `;
+  } catch(e) { document.getElementById('treasury').innerHTML = '<div class="card"><div class="label">Treasury</div><div class="value warning">Unavailable</div></div>'; }
+
+  // Load reports
+  try {
+    const res = await fetch('/reports');
+    const data = await res.json();
+    document.getElementById('report-count').textContent = `(${data.count})`;
+    const tbody = document.getElementById('reports');
+    tbody.innerHTML = data.reports.map(r => `
+      <tr>
+        <td>${r.goal.length > 80 ? r.goal.slice(0,80) + '...' : r.goal}</td>
+        <td style="white-space:nowrap; color:#888;">${new Date(r.completedAt).toLocaleDateString()}</td>
+        <td>${r.hasProof ? '<span class="proof-badge">On-chain</span>' : '<span style="color:#555">Pending</span>'}</td>
+        <td style="color:#00ff88">$${r.priceUsd}</td>
+      </tr>
+    `).join('');
+  } catch(e) { document.getElementById('reports').innerHTML = '<tr><td colspan="4">Failed to load</td></tr>'; }
+}
+loadData();
+</script>
+</body>
+</html>

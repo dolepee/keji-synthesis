@@ -1,8 +1,14 @@
 import http from "node:http";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 
 import { config } from "../config.js";
 import { loadReceipts } from "../lib/agent-store.js";
-import { recordRevenue } from "../lib/treasury.js";
+import { loadTreasury, recordRevenue } from "../lib/treasury.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const DEMO_HTML = readFileSync(join(__dirname, "demo.html"), "utf-8");
 import type { AgentRunReceipt } from "../types.js";
 
 const REPORT_PRICE_USD = config.x402Server.reportPriceUsd;
@@ -410,6 +416,21 @@ async function handleRequest(
         2
       )
     );
+    return;
+  }
+
+  // GET /treasury — treasury data for dashboard
+  if (url.pathname === "/treasury" && req.method === "GET") {
+    const treasury = await loadTreasury();
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(treasury, null, 2));
+    return;
+  }
+
+  // GET /demo — live dashboard
+  if (url.pathname === "/demo" && req.method === "GET") {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.end(DEMO_HTML);
     return;
   }
 
