@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc -p tsconfig.json && mkdir -p dist/server && cp src/server/demo.html dist/server/demo.html",
     "start": "node dist/cli.js serve",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "submission:keji-x402:build": "node scripts/build-keji-x402-submission.mjs",
+    "submission:keji-x402:create": "node scripts/create-keji-x402-synthesis-draft.mjs"
   },
   "dependencies": {
     "clanker-sdk": "^4.2.14",

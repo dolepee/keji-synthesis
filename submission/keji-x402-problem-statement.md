@@ -1,0 +1,3 @@
+Most agents can call a model, but they still cannot safely operate a budget. A human usually has to decide whether a paid input is justified, provision the payment path, approve the spend, and reconstruct what happened after the fact. That makes autonomous research and tool usage fragile, expensive, and hard to trust.
+
+KEJI addresses that gap by turning a paid research task into a verifiable decision loop. It evaluates whether the spend is within policy, makes the x402 purchase, uses Bankr for reasoning, records the decision and output in structured logs, and anchors a receipt onchain. The result is not just another research bot. It is an agent that can justify a spend, execute it, and leave a public audit trail.

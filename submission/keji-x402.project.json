@@ -1,0 +1,46 @@
+{
+  "teamUUID": "3bb662129ec540f6acbdf8b949c4a7fc",
+  "name": "KEJI x402",
+  "description": "KEJI x402 is an autonomous research CFO for agents.\n\nIt decides whether a task is worth paying for, enforces a spend policy, buys paid context through x402, routes reasoning through the Bankr LLM Gateway, completes the task, and anchors a receipt on Status Network. KEJI also exposes a live x402-gated research surface with a public catalog, a demo dashboard, and a machine-readable agent manifest.\n\nThe current implementation is backed by real proof:\n- a live report service at `https://keji-x402.up.railway.app`\n- a public demo dashboard at `https://keji-x402.up.railway.app/demo`\n- ERC-8004 registration on Base Mainnet\n- 18 anchored task receipts on Status Sepolia",
+  "problemStatement": "Most agents can call a model, but they still cannot safely operate a budget. A human usually has to decide whether a paid input is justified, provision the payment path, approve the spend, and reconstruct what happened after the fact. That makes autonomous research and tool usage fragile, expensive, and hard to trust.\n\nKEJI addresses that gap by turning a paid research task into a verifiable decision loop. It evaluates whether the spend is within policy, makes the x402 purchase, uses Bankr for reasoning, records the decision and output in structured logs, and anchors a receipt onchain. The result is not just another research bot. It is an agent that can justify a spend, execute it, and leave a public audit trail.",
+  "repoURL": "https://github.com/dolepee/keji-synthesis",
+  "trackUUIDs": [
+    "fdb76d08812b43f6a5f454744b66f590",
+    "dcaf0b1bf5d44c72a34bb771008e137a",
+    "3bf41be958da497bbb69f1a150c76af9",
+    "10bd47fac07e4f85bda33ba482695b24",
+    "877cd61516a14ad9a199bf48defec1c1"
+  ],
+  "conversationLog": "# KEJI x402 Human-Agent Collaboration Log\n\n## Initial Build Direction\n\n- The product thesis was defined around a missing primitive in autonomous systems:\n  agents can reason, but they still cannot safely operate a budget.\n- The build focused on a full agent loop instead of a static research endpoint:\n  evaluate spend, buy a paid input, complete the task, verify the result, and write a receipt.\n\n## Core Implementation\n\n- The agent scaffolded a TypeScript CLI for KEJI.\n- The human and agent aligned on a CFO-style product framing:\n  budget enforcement, paid tool usage, and auditable receipts.\n- The agent implemented:\n  spend-policy enforcement, planner/executor flow, Bankr integration, AgentCash x402 purchasing, Status receipt anchoring, structured logs, and manifest syncing.\n\n## Proof and Live Surfaces\n\n- The agent registered KEJI on Synthesis and persisted the team registration artifacts.\n- A real ERC-8004 registration was completed on Base Mainnet.\n- The agent deployed the Status receipt registry and anchored live task receipts on Status Sepolia.\n- The public KEJI x402 service was exposed with:\n  a demo dashboard, a report catalog, an OpenAPI spec, and a `.well-known` agent manifest.\n\n## Current Constraints\n\n- The x402 endpoint is live, but its payment validation is still hackathon-grade rather than production-grade.\n- Treasury tracking exists, but the current revenue numbers do not support a self-sustaining economics claim.\n- The strongest honest story is:\n  autonomous paid research with budget controls and onchain receipts.\n\n## Submission Packaging\n\n- For submission purposes, the agent narrowed KEJI’s track list to the tracks it can defend:\n  Bankr, ERC-8004 receipts, autonomous execution, Status, and Open Track.\n- The agent explicitly excluded `Agent Services on Base` to avoid overstating the current payment-verification path.",
+  "submissionMetadata": {
+    "agentFramework": "other",
+    "agentFrameworkOther": "custom TypeScript autonomous CLI with Bankr and x402 integrations",
+    "agentHarness": "codex-cli",
+    "model": "gpt-5",
+    "skills": [
+      "keji-research-reports"
+    ],
+    "tools": [
+      "TypeScript",
+      "Bankr LLM Gateway",
+      "AgentCash",
+      "Status Network",
+      "Railway",
+      "Base"
+    ],
+    "helpfulResources": [
+      "https://docs.bankr.bot/llm-gateway/overview/",
+      "https://docs.bankr.bot/openclaw/installation",
+      "https://synthesis.devfolio.co/submission/skill.md"
+    ],
+    "helpfulSkills": [
+      {
+        "name": "keji-research-reports",
+        "reason": "Kept the packaging grounded to the live KEJI research surface and its actual x402 delivery model instead of drifting into a generic agent-services pitch."
+      }
+    ],
+    "intention": "continuing",
+    "intentionNotes": "Next work is to harden x402 payment verification and improve the economics layer so KEJI can evolve from a hackathon prototype into a defensible paid agent service."
+  },
+  "deployedURL": "https://keji-x402.up.railway.app/demo"
+}
