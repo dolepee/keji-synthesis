@@ -5,6 +5,7 @@ const root = process.cwd();
 const submissionDir = path.join(root, "submission");
 const outputFile = path.join(submissionDir, "keji-x402.project.json");
 const registrationFile = path.join(root, "runtime", "synthesis-registration.json");
+const assetBaseUrl = "https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@main/submission/assets";
 
 const trackUUIDs = [
   "fdb76d08812b43f6a5f454744b66f590",
@@ -71,6 +72,9 @@ const payload = {
       "Next work is to harden x402 payment verification and improve the economics layer so KEJI can evolve from a hackathon prototype into a defensible paid agent service.",
   },
   deployedURL: "https://keji-x402.up.railway.app/demo",
+  videoURL: `${assetBaseUrl}/keji-x402-demo.mp4`,
+  pictures: `${assetBaseUrl}/keji-x402-screens.png`,
+  coverImageURL: `${assetBaseUrl}/keji-x402-cover.png`,
 };
 
 if (process.env.SYNTHESIS_VIDEO_URL) {
