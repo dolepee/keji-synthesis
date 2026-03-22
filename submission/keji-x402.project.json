@@ -43,7 +43,7 @@
     "intentionNotes": "Next work is to harden x402 payment verification and improve the economics layer so KEJI can evolve from a hackathon prototype into a defensible paid agent service."
   },
   "deployedURL": "https://keji-x402.up.railway.app/demo",
-  "videoURL": "https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@83b8240f483b99a21db3257f969209f11fd9007c/submission/assets/keji-x402-demo.mp4",
-  "pictures": "https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@83b8240f483b99a21db3257f969209f11fd9007c/submission/assets/keji-x402-screens.png",
-  "coverImageURL": "https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@83b8240f483b99a21db3257f969209f11fd9007c/submission/assets/keji-x402-cover.png"
+  "videoURL": "https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@33a641170f748ab8adc5436d995f19eba737f820/submission/assets/keji-x402-demo.mp4",
+  "pictures": "https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@33a641170f748ab8adc5436d995f19eba737f820/submission/assets/keji-x402-screens.png",
+  "coverImageURL": "https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@33a641170f748ab8adc5436d995f19eba737f820/submission/assets/keji-x402-cover.png"
 }
