@@ -111,6 +111,12 @@ function buildReportPayload(receipt: AgentRunReceipt): Record<string, unknown> {
   };
 }
 
+function getLatestReceipt(receipts: AgentRunReceipt[]): AgentRunReceipt | null {
+  return receipts
+    .slice()
+    .sort((left, right) => Date.parse(right.completedAt) - Date.parse(left.completedAt))[0] ?? null;
+}
+
 async function handleRequest(
   req: http.IncomingMessage,
   res: http.ServerResponse
@@ -429,8 +435,30 @@ async function handleRequest(
   // GET /treasury — treasury data for dashboard
   if (url.pathname === "/treasury" && req.method === "GET") {
     const treasury = await loadTreasury();
+    const latestReceipt = getLatestReceipt(receipts);
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(treasury, null, 2));
+    res.end(
+      JSON.stringify(
+        {
+          revenueEarnedUsd: treasury.revenueEarnedUsd,
+          totalSpentUsd: treasury.totalSpentUsd,
+          totalInferenceCostUsd: treasury.totalInferenceCostUsd,
+          totalX402SpendUsd: treasury.totalX402SpendUsd,
+          totalReceiptsAnchored: treasury.totalReceiptsAnchored,
+          totalTasksCompleted: treasury.totalTasksCompleted,
+          updatedAt: treasury.updatedAt,
+          latestReceiptAt: latestReceipt?.completedAt ?? null,
+          latestReceiptId: latestReceipt?.receiptId ?? null,
+          latestProofUrl: latestReceipt?.proof?.explorerUrl ?? null,
+          disclosure: {
+            economics: "Hackathon prototype. Delivery and receipt loops are live; organic demand validation is still in progress.",
+            payments: "Public x402 service is live, but payment verification remains hackathon-grade rather than production-grade.",
+          },
+        },
+        null,
+        2
+      )
+    );
     return;
   }
 

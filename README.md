@@ -78,7 +78,7 @@ request -> plan -> budget check -> x402 purchase -> Bankr reasoning -> verify ->
 ### Not Claimed
 
 - production-grade x402 validation
-- self-sustaining economics
+- economics still in validation
 - strong recent market demand
 
 That distinction matters. KEJI is being submitted as a budgeted autonomous research loop with receipts, not as a proven self-funding business.

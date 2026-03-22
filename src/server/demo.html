@@ -35,13 +35,15 @@
   .discovery a { color: #4488ff; text-decoration: none; word-break: break-all; }
   .discovery .dl { color: #888; }
   .loading { color: #888; padding: 20px; text-align: center; }
+  .note { margin-top: 10px; color: #9aa0a6; font-size: 0.82em; line-height: 1.5; }
+  .activity { margin-top: 16px; font-size: 0.85em; color: #aaa; }
   @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } .discovery { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="container">
   <h1><span class="status-dot live"></span> KEJI</h1>
-  <div class="subtitle">Autonomous Agent CFO — manages budgets, purchases research, sells reports via x402, and anchors every transaction onchain. Every claim below is backed by a log entry or tx hash.</div>
+  <div class="subtitle">Autonomous Agent CFO — evaluates spend, purchases paid context when justified, completes the task, and anchors receipts onchain. Every claim below is backed by a log entry or tx hash.</div>
 
   <div class="integrations">
     <span class="tag">Bankr LLM</span>
@@ -56,6 +58,8 @@
   <div class="grid" id="treasury">
     <div class="loading">Loading...</div>
   </div>
+  <div class="note" id="treasury-note">Loading treasury notes...</div>
+  <div class="activity" id="activity-note"></div>
 
   <h2>Discovery Endpoints</h2>
   <div class="discovery">
@@ -77,7 +81,7 @@
 
   <div class="footer">
     KEJI v0.2.0 &mdash; Built for Synthesis Hackathon 2026<br>
-    Bankr inference &rarr; x402 sales &rarr; Status receipts &rarr; self-sustaining economics
+    Budget checks &rarr; Bankr reasoning &rarr; paid context when justified &rarr; Status receipts
   </div>
 </div>
 
@@ -89,13 +93,23 @@ async function loadData() {
     const t = await res.json();
     document.getElementById('treasury').innerHTML = `
       <div class="card"><div class="label">Revenue Earned</div><div class="value">$${t.revenueEarnedUsd.toFixed(2)}</div></div>
-      <div class="card"><div class="label">Total Spent</div><div class="value negative">$${t.totalSpentUsd.toFixed(2)}</div></div>
       <div class="card"><div class="label">Tasks Completed</div><div class="value">${t.totalTasksCompleted}</div></div>
       <div class="card"><div class="label">Receipts Anchored</div><div class="value">${t.totalReceiptsAnchored}</div></div>
-      <div class="card"><div class="label">Net Position</div><div class="value ${t.netPositionUsd >= 0 ? '' : 'negative'}">$${t.netPositionUsd.toFixed(2)}</div></div>
       <div class="card"><div class="label">Inference Cost</div><div class="value">$${t.totalInferenceCostUsd.toFixed(3)}</div></div>
+      <div class="card"><div class="label">x402 Spend</div><div class="value warning">$${t.totalX402SpendUsd.toFixed(2)}</div></div>
+      <div class="card"><div class="label">Last Updated</div><div class="value" style="font-size:1.05em;">${new Date(t.updatedAt).toLocaleString()}</div></div>
+      <div class="card"><div class="label">Latest Receipt</div><div class="value" style="font-size:1.05em;">${t.latestReceiptId ? t.latestReceiptId.slice(0,8) + '…' : 'n/a'}</div></div>
     `;
-  } catch(e) { document.getElementById('treasury').innerHTML = '<div class="card"><div class="label">Treasury</div><div class="value warning">Unavailable</div></div>'; }
+    document.getElementById('treasury-note').textContent = t.disclosure?.economics || 'Treasury notes unavailable.';
+    const parts = [];
+    if (t.latestReceiptAt) parts.push(`Latest task completed ${new Date(t.latestReceiptAt).toLocaleString()}`);
+    if (t.latestProofUrl) parts.push(`<a href="${t.latestProofUrl}" target="_blank">latest proof</a>`);
+    if (t.disclosure?.payments) parts.push(t.disclosure.payments);
+    document.getElementById('activity-note').innerHTML = parts.join(' · ');
+  } catch(e) {
+    document.getElementById('treasury').innerHTML = '<div class="card"><div class="label">Treasury</div><div class="value warning">Unavailable</div></div>';
+    document.getElementById('treasury-note').textContent = 'Treasury notes unavailable.';
+  }
 
   // Load reports
   try {

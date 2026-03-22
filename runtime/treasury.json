@@ -1,9 +1,9 @@
 {
-  "totalSpentUsd": 42.551,
-  "totalInferenceCostUsd": 0.051,
-  "totalX402SpendUsd": 42.5,
-  "totalReceiptsAnchored": 17,
-  "totalTasksCompleted": 17,
+  "totalSpentUsd": 42.564,
+  "totalInferenceCostUsd": 0.054,
+  "totalX402SpendUsd": 42.51,
+  "totalReceiptsAnchored": 18,
+  "totalTasksCompleted": 18,
   "revenueEarnedUsd": 0.11,
   "revenueSourceBreakdown": [
     {
@@ -62,7 +62,7 @@
       "timestamp": "2026-03-17T08:41:49.338Z"
     }
   ],
-  "netPositionUsd": -42.441,
+  "netPositionUsd": -42.454,
   "selfSustainabilityRatio": 0,
-  "updatedAt": "2026-03-17T12:21:51.826Z"
+  "updatedAt": "2026-03-22T17:21:05.340Z"
 }
