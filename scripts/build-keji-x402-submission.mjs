@@ -5,7 +5,8 @@ const root = process.cwd();
 const submissionDir = path.join(root, "submission");
 const outputFile = path.join(submissionDir, "keji-x402.project.json");
 const registrationFile = path.join(root, "runtime", "synthesis-registration.json");
-const assetBaseUrl = "https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@main/submission/assets";
+const assetRef = process.env.SYNTHESIS_ASSET_REF || "main";
+const assetBaseUrl = `https://cdn.jsdelivr.net/gh/dolepee/keji-synthesis@${assetRef}/submission/assets`;
 
 const trackUUIDs = [
   "fdb76d08812b43f6a5f454744b66f590",
