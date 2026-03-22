@@ -11,6 +11,7 @@
     "build": "tsc -p tsconfig.json && mkdir -p dist/server && cp src/server/demo.html dist/server/demo.html",
     "start": "node dist/cli.js serve",
     "lint": "tsc --noEmit",
+    "record:demo": "node scripts/record-demo.mjs",
     "submission:keji-x402:build": "node scripts/build-keji-x402-submission.mjs",
     "submission:keji-x402:create": "node scripts/create-keji-x402-synthesis-draft.mjs",
     "submission:keji-x402:update": "node scripts/update-keji-x402-synthesis-draft.mjs"
@@ -24,6 +25,9 @@
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
+    "ffmpeg-static": "^5.2.0",
+    "ffprobe-static": "^3.1.0",
+    "playwright": "^1.53.1",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }

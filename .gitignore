@@ -12,3 +12,4 @@ coverage
 *.log
 runtime/status-wallet.json
 runtime/synthesis-api-key.txt
+demo-videos/
