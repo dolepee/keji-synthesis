@@ -16,10 +16,8 @@ const assetVideoPath = path.join(root, "submission", "assets", "keji-x402-demo.m
 const siteUrl = "https://keji-x402.up.railway.app/demo";
 const reportsUrl = "https://keji-x402.up.railway.app/reports";
 const agentManifestUrl = "https://keji-x402.up.railway.app/.well-known/agent.json";
-const erc8004TxUrl =
-  "https://basescan.org/tx/0x1269fb24f59cc7709ee88812e16119d7d45a21b0b7f79667e6c78e459acdd279";
-const statusTxUrl =
-  "https://sepoliascan.status.network/tx/0x7e23bc400ce253094de94df02f2327c9abad60cb95aa44c2ef4017efa4f11e33";
+const openApiUrl = "https://keji-x402.up.railway.app/openapi.json";
+const treasuryUrl = "https://keji-x402.up.railway.app/treasury";
 
 function wait(page, ms) {
   return page.waitForTimeout(ms);
@@ -99,8 +97,8 @@ async function scrollToTop(page, durationMs = 2500) {
   await smoothScrollBy(page, -currentY, durationMs);
 }
 
-// Playwright records one video per page. To keep a single continuous demo file,
-// external proof pages are visited sequentially in the same page instead of tab videos.
+// Playwright records one video per page. This demo stays on first-party KEJI pages
+// to avoid explorer verification walls and keep the silent walkthrough concise.
 async function visitProofPage(page, url, options = {}) {
   await page.goto(url, { waitUntil: "domcontentloaded" });
   await waitForStableLoad(page);
@@ -200,18 +198,18 @@ async function main() {
 
   await page.goto(siteUrl, { waitUntil: "domcontentloaded" });
   await waitForStableLoad(page);
-  await wait(page, 5000);
-
-  await smoothScrollToSelector(page, "text=Treasury", 6500, 0.3);
   await wait(page, 3500);
 
-  await smoothScrollToSelector(page, "text=Research Reports", 8000, 0.62);
-  await wait(page, 4000);
+  await smoothScrollToSelector(page, "text=Treasury", 5500, 0.2);
+  await wait(page, 3000);
+
+  await smoothScrollToSelector(page, "text=Discovery Endpoints", 5000, 0.42);
+  await wait(page, 3000);
 
   await visitProofPage(page, reportsUrl, {
     initialPauseMs: 3500,
-    scrollDistance: 2500,
-    scrollDurationMs: 8000,
+    scrollDistance: 1800,
+    scrollDurationMs: 6000,
     finalPauseMs: 2000,
   });
 
@@ -221,45 +219,33 @@ async function main() {
   await wait(page, 1200);
 
   await visitProofPage(page, agentManifestUrl, {
-    initialPauseMs: 3500,
+    initialPauseMs: 3000,
+    scrollDistance: 800,
+    scrollDurationMs: 2500,
+    finalPauseMs: 1200,
+  });
+
+  await visitProofPage(page, openApiUrl, {
+    initialPauseMs: 3000,
     scrollDistance: 900,
-    scrollDurationMs: 3500,
+    scrollDurationMs: 2500,
     finalPauseMs: 1200,
   });
 
-  await page.goto(siteUrl, { waitUntil: "domcontentloaded" });
-  await waitForStableLoad(page);
-  await scrollToTop(page, 2200);
-  await wait(page, 1200);
-
-  await visitProofPage(page, erc8004TxUrl, {
-    initialPauseMs: 4000,
-    scrollDistance: 1800,
-    scrollDurationMs: 6500,
-    finalPauseMs: 2000,
-  });
-
-  await page.goto(siteUrl, { waitUntil: "domcontentloaded" });
-  await waitForStableLoad(page);
-  await scrollToTop(page, 2200);
-  await wait(page, 1200);
-
-  await visitProofPage(page, statusTxUrl, {
-    initialPauseMs: 3500,
+  await visitProofPage(page, treasuryUrl, {
+    initialPauseMs: 3000,
     scrollDistance: 1000,
-    scrollDurationMs: 4000,
+    scrollDurationMs: 2500,
     finalPauseMs: 1200,
   });
 
   await page.goto(siteUrl, { waitUntil: "domcontentloaded" });
   await waitForStableLoad(page);
-  await smoothScrollToSelector(page, "text=Discovery Endpoints", 7000, 0.48);
-  await wait(page, 5000);
+  await smoothScrollToSelector(page, "text=Research Reports", 5500, 0.62);
+  await wait(page, 3500);
 
-  await smoothScrollBy(page, 2200, 11000);
-  await wait(page, 5000);
-  await scrollToTop(page, 2500);
-  await wait(page, 1500);
+  await smoothScrollBy(page, 1800, 5000);
+  await wait(page, 4000);
 
   await page.close();
   const recordedPath = await video.path();
@@ -268,7 +254,7 @@ async function main() {
   await browser.close();
 
   await convertToMp4();
-  const normalizedDurationSeconds = await normalizeDurationIfNeeded(finalVideoPath, 120, 112);
+  const normalizedDurationSeconds = await normalizeDurationIfNeeded(finalVideoPath, 80, 68);
   await copyFile(finalVideoPath, assetVideoPath);
 
   const [fileStats, durationSeconds] = await Promise.all([
